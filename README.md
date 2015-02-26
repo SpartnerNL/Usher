@@ -120,3 +120,29 @@ return [
     ]
 ]
 ```
+
+## Events
+
+### Domain Events
+
+Domain Event | When
+------------- | -------------
+UserGotAssignedToRole  | `$user->assignRole($role)`
+UserGotBanned  |  `$user->ban()`
+UserGotRemovedFromRole | `$user->removeRole($role)`
+UserGotSuspended | `$user->suspend($minutes)`
+UserRegistered | `$repo->create()`
+UserUpdatedProfile | `$repo->update()`
+RoleWasCreated | `$repo->create()`
+RoleWasUpdated | `$repo->update()`
+
+### Event Listeners
+
+Event listeners can be enabled and disabled inside the config. By default the listed listenes are all enabled.
+
+Listener | When
+------------- | -------------
+SaveLastAttemptDate | `auth.attempt`
+CheckIfUserIsBanned | `auth.attempt`
+CheckIfUserIsSuspended  | `auth.attempt`
+SaveLastLoginDate | `auth.login`
