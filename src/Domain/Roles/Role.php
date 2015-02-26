@@ -33,13 +33,13 @@ class Role implements RoleInterface, PermissionInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string")
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="Maatwebsite\Usher\Domain\Users\User", mappedBy="roles")
