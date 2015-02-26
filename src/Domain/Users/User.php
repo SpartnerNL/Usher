@@ -29,8 +29,7 @@ use Maatwebsite\Usher\Contracts\Users\Embeddables\RegisteredAt as RegisteredAtIn
 use Maatwebsite\Usher\Contracts\Users\Embeddables\SuspendedTill as SuspendTillInterface;
 
 /**
- * @ORM\Entity(repositoryClass="Maatwebsite\Usher\Infrastructure\Users\DoctrineUserRepository")
- * @ORM\Table(name="users")
+ * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface, Authenticatable, PermissionInterface

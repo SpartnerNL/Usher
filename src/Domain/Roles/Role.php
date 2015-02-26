@@ -11,8 +11,7 @@ use Maatwebsite\Usher\Domain\Users\Events\UserGotAssignedToRole;
 use Maatwebsite\Usher\Domain\Users\Events\UserGotRemovedFromRole;
 
 /**
- * @ORM\Entity(repositoryClass="Maatwebsite\Usher\Infrastructure\Roles\DoctrineRoleRepository")
- * @ORM\Table(name="roles")
+ * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks()
  */
 class Role implements RoleInterface, PermissionInterface
