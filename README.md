@@ -13,6 +13,7 @@
 
 Include the service provider in `config/app.php`
 ```php
+'Mitch\LaravelDoctrine\LaravelDoctrineServiceProvider',
 'Maatwebsite\Usher\UsherServiceProvider'
 ```
 
