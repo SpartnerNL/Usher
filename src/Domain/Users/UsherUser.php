@@ -1,5 +1,7 @@
 <?php namespace Maatwebsite\Usher\Domain\Users;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Maatwebsite\Usher\Contracts\Users\User as UserInterface;
 
 /**
@@ -10,4 +12,20 @@ use Maatwebsite\Usher\Contracts\Users\User as UserInterface;
 class UsherUser extends User implements UserInterface
 {
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Maatwebsite\Usher\Domain\Roles\UsherRole", inversedBy="users")
+     * @ORM\JoinTable(name="user_roles",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")})
+     * @var ArrayCollection|\Maatwebsite\Usher\Domain\Roles\UsherRole[]
+     */
+    protected $roles;
+
+    /**
+     * @return ArrayCollection|\Maatwebsite\Usher\Contracts\Roles\Role[]
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
 }

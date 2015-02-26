@@ -1,10 +1,8 @@
 <?php namespace Maatwebsite\Usher\Domain\Users;
 
 use Doctrine\ORM\Mapping as ORM;
-use Maatwebsite\Usher\Contracts\Permissions\PermissionInterface;
-use Maatwebsite\Usher\Contracts\Roles\Role;
-use Maatwebsite\Usher\Domain\Permissions\PermissionTrait;
 use Maatwebsite\Usher\Traits\RememberToken;
+use Maatwebsite\Usher\Contracts\Roles\Role;
 use Maatwebsite\Usher\Traits\Authentication;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,6 +10,7 @@ use Maatwebsite\Usher\Contracts\Users\Embeddables\Name;
 use Maatwebsite\Usher\Domain\Users\Events\UserGotBanned;
 use Maatwebsite\Usher\Domain\Users\Embeddables\BannedAt;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\Email;
+use Maatwebsite\Usher\Domain\Permissions\PermissionTrait;
 use Maatwebsite\Usher\Domain\Shared\Embeddables\UpdatedAt;
 use Maatwebsite\Usher\Domain\Users\Events\UserGotSuspended;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\Password;
@@ -20,6 +19,7 @@ use Maatwebsite\Usher\Contracts\Users\User as UserInterface;
 use Maatwebsite\Usher\Domain\Users\Embeddables\SuspendedTill;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\LastLoginAt;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\LastAttemptAt;
+use Maatwebsite\Usher\Contracts\Permissions\PermissionInterface;
 use Maatwebsite\Usher\Domain\Users\Events\UserGotAssignedToRole;
 use Maatwebsite\Usher\Domain\Users\Events\UserGotRemovedFromRole;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\HashedPassword;
@@ -64,13 +64,6 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
      * @var HashedPassword
      */
     protected $password;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Maatwebsite\Usher\Domain\Roles\Role", inversedBy="users")
-     * @ORM\JoinTable(name="user_roles")
-     * @var ArrayCollection|Role[]
-     **/
-    protected $roles;
 
     /**
      * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Users\Embeddables\LastAttemptAt", columnPrefix=false)
@@ -199,17 +192,14 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     /**
      * @return ArrayCollection|\Maatwebsite\Usher\Contracts\Roles\Role[]
      */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
+    abstract public function getRoles();
 
     /**
      * @param Role $role
      */
     public function assignRole(Role $role)
     {
-        $this->roles->add($role);
+        $this->getRoles()->add($role);
 
         event(new UserGotAssignedToRole($this, $role));
     }
@@ -219,7 +209,7 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
      */
     public function removeRole(Role $role)
     {
-        $this->roles->removeElement($role);
+        $this->getRoles()->removeElement($role);
 
         event(new UserGotRemovedFromRole($this, $role));
     }

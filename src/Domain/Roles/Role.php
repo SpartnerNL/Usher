@@ -41,13 +41,6 @@ abstract class Role implements RoleInterface, PermissionInterface
     protected $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Maatwebsite\Usher\Domain\Users\User", mappedBy="roles")
-     * @ORM\JoinTable(name="user_roles")
-     * @var ArrayCollection|User[]
-     **/
-    protected $users;
-
-    /**
      * @internal $users
      */
     public function __construct()
@@ -82,10 +75,7 @@ abstract class Role implements RoleInterface, PermissionInterface
     /**
      * @return ArrayCollection
      */
-    public function getUsers()
-    {
-        return $this->users;
-    }
+    abstract public function getUsers();
 
     /**
      * @param User $user

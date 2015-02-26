@@ -33,7 +33,7 @@ class CheckIfUserIsSuspended
 
         if ($user && $user->isSuspended()) {
             throw new UserIsSuspendedException('You are temporarily suspended. Try again later.');
-        } elseif ($user->getSuspendedTill()) {
+        } elseif ($user && $user->getSuspendedTill()) {
             $user->unsetSuspended();
             $this->repository->persist($user);
             $this->repository->flush();
