@@ -30,9 +30,9 @@ class UsherUser extends User implements UserInterface
     }
 
     /**
-     * @param array|\Maatwebsite\Usher\Contracts\Roles\Role[] $roles
+     * @param ArrayCollection $roles
      */
-    public function setRoles(array $roles = array())
+    public function setRoles(ArrayCollection $roles)
     {
         $this->roles = $roles;
     }
