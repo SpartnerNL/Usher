@@ -11,13 +11,13 @@ trait Timestamps
      * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Shared\Embeddables\CreatedAt", columnPrefix=false)
      * @var CreatedAt
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Shared\Embeddables\UpdatedAt", columnPrefix=false)
      * @var UpdatedAt
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @ORM\PrePersist
