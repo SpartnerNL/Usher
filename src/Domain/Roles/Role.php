@@ -109,24 +109,4 @@ abstract class Role implements RoleInterface, PermissionInterface
      * @return ArrayCollection
      */
     abstract public function getUsers();
-
-    /**
-     * @param User $user
-     */
-    public function addUser(User $user)
-    {
-        $this->getUsers()->add($user);
-
-        event(new UserGotAssignedToRole($user, $this));
-    }
-
-    /**
-     * @param User $user
-     */
-    public function removeUser(User $user)
-    {
-        $this->getUsers()->removeElement($user);
-
-        event(new UserGotRemovedFromRole($user, $this));
-    }
 }

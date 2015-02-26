@@ -243,7 +243,9 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
      */
     public function assignRole(Role $role)
     {
-        $this->getRoles()->add($role);
+        $roles = $this->getRoles();
+        $roles[] = $role;
+        $this->setRoles($roles);
 
         event(new UserGotAssignedToRole($this, $role));
     }
@@ -255,8 +257,7 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     {
         $this->removeAllRoles();
 
-        foreach($roles as $role)
-        {
+        foreach ($roles as $role) {
             $this->assignRole($role);
         }
     }
@@ -267,6 +268,18 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     public function removeRole(Role $role)
     {
         $this->getRoles()->removeElement($role);
+        $roles = $this->getRoles();
+
+        $i = 0;
+        foreach ($roles as $existingRole) {
+            if ($role === $existingRole) {
+                unset($roles[$i]);
+            }
+
+            $i++;
+        }
+
+        $this->setRoles($roles);
 
         event(new UserGotRemovedFromRole($this, $role));
     }
