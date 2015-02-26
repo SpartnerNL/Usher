@@ -32,7 +32,7 @@ use Maatwebsite\Usher\Contracts\Users\Embeddables\SuspendedTill as SuspendTillIn
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks()
  */
-class User implements UserInterface, Authenticatable, PermissionInterface
+abstract class User implements UserInterface, Authenticatable, PermissionInterface
 {
 
     /**

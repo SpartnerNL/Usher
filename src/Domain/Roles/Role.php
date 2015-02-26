@@ -14,7 +14,7 @@ use Maatwebsite\Usher\Domain\Users\Events\UserGotRemovedFromRole;
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks()
  */
-class Role implements RoleInterface, PermissionInterface
+abstract class Role implements RoleInterface, PermissionInterface
 {
 
     /**
