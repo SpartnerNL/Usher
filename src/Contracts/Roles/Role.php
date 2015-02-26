@@ -1,7 +1,5 @@
 <?php namespace Maatwebsite\Usher\Contracts\Roles;
 
-use Maatwebsite\Usher\Contracts\Users\User;
-
 interface Role
 {
 
@@ -24,16 +22,6 @@ interface Role
      * @return ArrayCollection
      */
     public function getUsers();
-
-    /**
-     * @param User $user
-     */
-    public function addUser(User $user);
-
-    /**
-     * @param User $user
-     */
-    public function removeUser(User $user);
 
     /**
      * @return array
