@@ -56,6 +56,14 @@ class Customer extends User implements UserInterface
     protected $groups;
     
     /**
+     * Customer Constructor
+     */
+    public function __construct()
+    {
+        $this->groups = new ArrayCollection();
+    }
+    
+    /**
      * @return ArrayCollection|\Maatwebsite\Usher\Contracts\Roles\Role[]
      */
     public function getRoles()
