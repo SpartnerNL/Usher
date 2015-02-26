@@ -101,3 +101,14 @@ class Group extends Role implements RoleInterface
 ```
 
 Next you'll have to update the class reference in `config/usher.php` for the `user.entity` en `role.entity`
+
+``php
+return [
+    'users'  => [
+        'entity' => 'Customer'
+    ],
+    'roles'  => [
+        'entity' => 'Group'
+    ]
+]
+```
