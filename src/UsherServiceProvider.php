@@ -47,7 +47,7 @@ class UsherServiceProvider extends ServiceProvider
             return new UsherUserProvider(
                 $app['Illuminate\Contracts\Hashing\Hasher'],
                 $app['Maatwebsite\Usher\Contracts\Users\UserRepository'],
-                $app['config']['usher.users.model']
+                $app['config']['usher.users.entity']
             );
         });
     }
@@ -73,7 +73,7 @@ class UsherServiceProvider extends ServiceProvider
             return new DoctrineUserRepository(
                 $app['Doctrine\ORM\EntityManagerInterface'],
                 new ClassMetadata(
-                    $app['config']['usher.users.model']
+                    $app['config']['usher.users.entity']
                 )
             );
         });
@@ -82,7 +82,7 @@ class UsherServiceProvider extends ServiceProvider
             return new DoctrineRoleRepository(
                 $app['Doctrine\ORM\EntityManagerInterface'],
                 new ClassMetadata(
-                    $app['config']['usher.users.model']
+                    $app['config']['usher.users.entity']
                 )
             );
         });
@@ -95,12 +95,12 @@ class UsherServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             'Maatwebsite\Usher\Contracts\Users\User',
-            $this->app['config']['usher.users.model']
+            $this->app['config']['usher.users.entity']
         );
 
         $this->app->bind(
             'Maatwebsite\Usher\Contracts\Roles\Role',
-            $this->app['config']['usher.roles.model']
+            $this->app['config']['usher.roles.entity']
         );
     }
 

@@ -8,7 +8,7 @@ return array(
     |--------------------------------------------------------------------------
     */
     'users'  => [
-        'model' => 'Maatwebsite\Usher\Domain\Users\UsherUser'
+        'entity' => 'Maatwebsite\Usher\Domain\Users\UsherUser'
     ],
 
     /*
@@ -17,7 +17,7 @@ return array(
     |--------------------------------------------------------------------------
     */
     'roles'  => [
-        'model' => 'Maatwebsite\Usher\Domain\Roles\UsherRole'
+        'entity' => 'Maatwebsite\Usher\Domain\Roles\UsherRole'
     ],
 
     /*
