@@ -54,11 +54,12 @@ trait PermissionTrait
     }
 
     /**
+     * Return the permission value
      * @param      $key
      * @param bool $default
      * @return bool
      */
-    public function getPermission($key, $default = false)
+    public function getPermission($key, $default = true)
     {
         return $this->permissionExists($key) ? $this->permissions[$key] : $default;
     }
