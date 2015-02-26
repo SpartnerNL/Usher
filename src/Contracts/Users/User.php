@@ -159,9 +159,9 @@ interface User
     public function getRoles();
 
     /**
-     * @param array|Role[] $roles
+     * @param ArrayCollection|Role[] $roles
      */
-    public function setRoles(array $roles = array());
+    public function setRoles(ArrayCollection $roles);
 
     /**
      * @param Role $role
@@ -169,9 +169,9 @@ interface User
     public function assignRole(Role $role);
 
     /**
-     * @param array|Role[] $roles
+     * @param Role[] $roles
      */
-    public function syncRoles(array $roles = array());
+    public function syncRoles($roles = array());
 
     /**
      * @param Role $role

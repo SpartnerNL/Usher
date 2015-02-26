@@ -234,26 +234,24 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     abstract public function getRoles();
 
     /**
-     * @param array|Role[] $roles
+     * @param ArrayCollection|Role[] $roles
      */
-    abstract public function setRoles(array $roles = array());
+    abstract public function setRoles(ArrayCollection $roles);
 
     /**
      * @param Role $role
      */
     public function assignRole(Role $role)
     {
-        $roles = $this->getRoles();
-        $roles[] = $role;
-        $this->setRoles($roles);
+        $this->getRoles()->add($role);
 
         event(new UserGotAssignedToRole($this, $role));
     }
 
     /**
-     * @param array|Role[] $roles
+     * @param Role[] $roles
      */
-    public function syncRoles(array $roles = array())
+    public function syncRoles($roles = array())
     {
         $this->removeAllRoles();
 
@@ -268,18 +266,6 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     public function removeRole(Role $role)
     {
         $this->getRoles()->removeElement($role);
-        $roles = $this->getRoles();
-
-        $i = 0;
-        foreach ($roles as $existingRole) {
-            if ($role === $existingRole) {
-                unset($roles[$i]);
-            }
-
-            $i++;
-        }
-
-        $this->setRoles($roles);
 
         event(new UserGotRemovedFromRole($this, $role));
     }
@@ -289,7 +275,7 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
      */
     public function removeAllRoles()
     {
-        $this->setRoles(array());
+        $this->setRoles(new ArrayCollection);
     }
 
     /**
