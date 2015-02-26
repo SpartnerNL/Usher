@@ -3,6 +3,8 @@
 use Doctrine\ORM\Mapping as ORM;
 use Maatwebsite\Usher\Contracts\Permissions\PermissionInterface;
 use Maatwebsite\Usher\Domain\Permissions\PermissionTrait;
+use Maatwebsite\Usher\Domain\Roles\Events\RoleWasCreated;
+use Maatwebsite\Usher\Domain\Roles\Events\RoleWasUpdated;
 use Maatwebsite\Usher\Traits\Timestamps;
 use Maatwebsite\Usher\Contracts\Users\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -46,6 +48,37 @@ abstract class Role implements RoleInterface, PermissionInterface
     public function __construct()
     {
         $this->users = new ArrayCollection;
+    }
+
+    /**
+     * Register a new user
+     * @param       $name
+     * @param array $permissions
+     * @return $this
+     */
+    public function create($name, array $permissions = array())
+    {
+        $this->setName($name);
+        $this->setPermissions($permissions);
+
+        event(new RoleWasCreated($this));
+
+        return $this;
+    }
+
+    /**
+     * @param Name  $name
+     * @param array $permissions
+     * @return $this
+     */
+    public function update($name, array $permissions = array())
+    {
+        $this->setName($name);
+        $this->setPermissions($permissions);
+
+        event(new RoleWasUpdated($this));
+
+        return $this;
     }
 
     /**

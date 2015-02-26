@@ -73,24 +73,20 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
     {
         $user = new $this->_entityName;
 
-        $user->setName(
-            new Name(
-                $data['firstname'],
-                $data['lastname']
-            )
+        $name = new Name(
+            $data['firstname'],
+            $data['lastname']
         );
 
-        $user->setEmail(new Email(
+        $email = new Email(
             $data['email']
-        ));
+        );
 
-        $user->setPassword(new Password(
+        $password = new Password(
             $data['password']
-        ));
+        );
 
-        event(new UserRegistered($user));
-
-        return $user;
+        return $user->register($name, $email, $password);
     }
 
     /**
@@ -112,26 +108,24 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
      */
     public function update(User $user, array $data)
     {
-        $user->setName(
-            new Name(
-                $data['firstname'],
-                $data['lastname']
-            )
+        $name = new Name(
+            $data['firstname'],
+            $data['lastname']
         );
 
-        $user->setEmail(new Email(
+        $email = new Email(
             $data['email']
-        ));
+        );
 
-        $password = new Password($data['password']);
+        $password = new Password(
+            $data['password']
+        );
 
-        if (!$password->equals($user->getPassword())) {
-            $user->setPassword($password);
+        if ($password->equals($user->getPassword())) {
+            $password = null;
         }
 
-        event(new UserUpdatedProfile($user));
-
-        return $user;
+        return $user->update($name, $email, $password);
     }
 
     /**

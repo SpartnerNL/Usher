@@ -1,6 +1,7 @@
 <?php namespace Maatwebsite\Usher\Domain\Users;
 
 use Doctrine\ORM\Mapping as ORM;
+use Maatwebsite\Usher\Domain\Users\Events\UserRegistered;
 use Maatwebsite\Usher\Traits\RememberToken;
 use Maatwebsite\Usher\Contracts\Roles\Role;
 use Maatwebsite\Usher\Traits\Authentication;
@@ -131,6 +132,44 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
         $this->setUpdatedAt(
             new UpdatedAt
         );
+    }
+
+    /**
+     * Register a new user
+     * @param Name     $name
+     * @param Email    $email
+     * @param Password $password
+     * @return $this
+     */
+    public function register(Name $name, Email $email, Password $password)
+    {
+        $this->setName($name);
+        $this->setEmail($email);
+        $this->setPassword($password);
+
+        event(new UserRegistered($this));
+
+        return $this;
+    }
+
+    /**
+     * @param Name     $name
+     * @param Email    $email
+     * @param Password $password
+     * @return $this
+     */
+    public function update(Name $name, Email $email, Password $password = null)
+    {
+        $this->setName($name);
+        $this->setEmail($email);
+
+        if ($password) {
+            $this->setPassword($password);
+        }
+
+        event(new UserUpdatedProfile($this));
+
+        return $this;
     }
 
     /**

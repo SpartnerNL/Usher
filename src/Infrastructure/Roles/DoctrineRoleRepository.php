@@ -69,12 +69,7 @@ class DoctrineRoleRepository extends EntityRepository implements RoleRepository
     {
         $role = new $this->_entityName;
 
-        $role->setName($data['name']);
-        $role->setPermissions($data['permissions']);
-
-        event(new RoleWasCreated($role));
-
-        return $role;
+        return $role->create($data['name'], $data['permissions']);
     }
 
     /**
@@ -85,12 +80,7 @@ class DoctrineRoleRepository extends EntityRepository implements RoleRepository
      */
     public function update(Role $role, array $data)
     {
-        $role->setName($data['name']);
-        $role->setPermissions($data['permissions']);
-
-        event(new RoleWasUpdated($role));
-
-        return $role;
+        return $role->update($data['name'], $data['permissions']);
     }
 
     /**

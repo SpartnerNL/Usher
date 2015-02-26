@@ -131,10 +131,10 @@ UserGotAssignedToRole  | `$user->assignRole($role)`
 UserGotBanned  |  `$user->ban()`
 UserGotRemovedFromRole | `$user->removeRole($role)`
 UserGotSuspended | `$user->suspend($minutes)`
-UserRegistered | `$repo->create()`
-UserUpdatedProfile | `$repo->update()`
-RoleWasCreated | `$repo->create()`
-RoleWasUpdated | `$repo->update()`
+UserRegistered | `$user->register()`
+UserUpdatedProfile | `$user->update()`
+RoleWasCreated | `$role->create()`
+RoleWasUpdated | `$role->update()`
 
 ### Event Listeners
 
