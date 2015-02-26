@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Usher\Domain\Users;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Maatwebsite\Usher\Contracts\Users\User as UserInterface;
 
 /**
@@ -27,5 +27,13 @@ class UsherUser extends User implements UserInterface
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * @param array|\Maatwebsite\Usher\Contracts\Roles\Role[] $roles
+     */
+    public function setRoles(array $roles = array())
+    {
+        $this->roles = $roles;
     }
 }

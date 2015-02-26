@@ -159,12 +159,27 @@ interface User
     public function getRoles();
 
     /**
+     * @param array|Role[] $roles
+     */
+    public function setRoles(array $roles = array());
+
+    /**
      * @param Role $role
      */
     public function assignRole(Role $role);
 
     /**
+     * @param array|Role[] $roles
+     */
+    public function syncRoles(array $roles = array());
+
+    /**
      * @param Role $role
      */
     public function removeRole(Role $role);
+
+    /**
+     * Remove all roles
+     */
+    public function removeAllRoles();
 }
