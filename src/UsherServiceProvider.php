@@ -109,7 +109,7 @@ class UsherServiceProvider extends ServiceProvider
      */
     protected function registerPackageConfig()
     {
-        $path = __DIR__ . '/../config/config.php';
+        $path = __DIR__ . '/../config/usher.php';
 
         $this->publishes([
             $path => config_path('usher.php'),

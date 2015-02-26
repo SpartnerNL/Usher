@@ -1,6 +1,6 @@
 {
   "name": "maatwebsite/usher",
-  "description": "ACL package for Doctrine",
+  "description": "A Doctrine ACL package for Laravel",
   "license": "MIT",
   "keywords": [
     "doctrine",
@@ -20,12 +20,12 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "beberlei/assert": "~2.3"
+    "beberlei/assert": "~2.3",
+    "mitchellvanw/laravel-doctrine": "dev-develop"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",
-    "mockery/mockery": "~0.9",
-    "mitchellvanw/laravel-doctrine": "dev-develop"
+    "mockery/mockery": "~0.9"
   },
   "autoload": {
     "psr-4": {
