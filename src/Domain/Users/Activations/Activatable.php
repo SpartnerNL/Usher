@@ -1,8 +1,6 @@
 <?php namespace Maatwebsite\Usher\Domain\Users\Activations;
 
-use Maatwebsite\Usher\Contracts\Users\Activiations\ActivatedAt as ActivatedAtInterface;
 use Maatwebsite\Usher\Domain\Users\Events\UserGotActivated;
-use Maatwebsite\Usher\Contracts\Users\Activiations\ActivationCode;
 use Maatwebsite\Usher\Domain\Users\Events\UserGotDeactivated;
 use Maatwebsite\Usher\Exceptions\InvalidActiviationCodeException;
 
@@ -60,7 +58,7 @@ trait Activatable
     }
 
     /**
-     * @return ActivatedAtInterface
+     * @return ActivatedAt
      */
     public function getActivatedAt()
     {
@@ -68,9 +66,9 @@ trait Activatable
     }
 
     /**
-     * @param ActivatedAtInterface $activated_at
+     * @param ActivatedAt $activated_at
      */
-    public function setActivatedAt(ActivatedAtInterface $activated_at = null)
+    public function setActivatedAt(ActivatedAt $activated_at = null)
     {
         $this->activated_at = $activated_at;
     }
