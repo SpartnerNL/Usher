@@ -169,6 +169,13 @@ interface User
     public function assignRole(Role $role);
 
     /**
+     * Check if user has certain role
+     * @param $roleId
+     * @return mixed
+     */
+    public function hasRole($roleId);
+
+    /**
      * @param Role[] $roles
      */
     public function syncRoles($roles = array());

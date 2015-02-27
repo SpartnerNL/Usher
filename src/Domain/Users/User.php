@@ -249,6 +249,22 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     }
 
     /**
+     * Check if user has certain role
+     * @param $roleId
+     * @return mixed
+     */
+    public function hasRole($roleId)
+    {
+        foreach ($this->getRoles() as $role) {
+            if ($role->getId() === $roleId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param Role[] $roles
      */
     public function syncRoles($roles = array())
