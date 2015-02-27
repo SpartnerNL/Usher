@@ -149,7 +149,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
     {
         $user = $this->find($id);
 
-        parent::delete($user);
+        return parent::delete($user);
     }
 
     /**

@@ -55,7 +55,7 @@ class DoctrineRoleRepository extends EntityRepository implements RoleRepository
      */
     public function findByName($name)
     {
-        $this->findOneBy([
+        return $this->findOneBy([
             'name' => $name
         ]);
     }
@@ -92,7 +92,7 @@ class DoctrineRoleRepository extends EntityRepository implements RoleRepository
     {
         $role = $this->find($id);
 
-        parent::delete($role);
+        return parent::delete($role);
     }
 
     /**
