@@ -257,7 +257,7 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     public function hasRole($roleId)
     {
         foreach ($this->getRoles() as $role) {
-            if ($role->getId() === $roleId) {
+            if ($role->getId() == $roleId) {
                 return true;
             }
         }
