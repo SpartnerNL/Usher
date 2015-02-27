@@ -38,9 +38,9 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
      */
     public function __construct(EntityManagerInterface $em, ClassMetadata $class)
     {
-        $this->_entityName = $class->name;
         $this->_em = $em;
         $this->_class = $class;
+        $this->_entityName = $class->name;
     }
 
     /**
@@ -62,94 +62,6 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
         return $this->findOneBy(array(
             'email.email' => $email->getEmail()
         ));
-    }
-
-    /**
-     * Create a user resource
-     * @param  array $data
-     * @return User
-     */
-    public function create(array $data)
-    {
-        $user = new $this->_entityName;
-
-        $name = new Name(
-            $data['firstname'],
-            $data['lastname']
-        );
-
-        $email = new Email(
-            $data['email']
-        );
-
-        $password = new Password(
-            $data['password']
-        );
-
-        return $user->register($name, $email, $password);
-    }
-
-    /**
-     * Create a user and assign roles to it
-     * @param  array $data
-     * @param  array $roles
-     * @return void
-     */
-    public function createWithRoles($data, $roles)
-    {
-        // TODO: Implement createWithRoles() method.
-    }
-
-    /**
-     * Update a user
-     * @param User  $user
-     * @param array $data
-     * @return User
-     */
-    public function update(User $user, array $data)
-    {
-        $name = new Name(
-            $data['firstname'],
-            $data['lastname']
-        );
-
-        $email = new Email(
-            $data['email']
-        );
-
-        $password = new Password(
-            $data['password']
-        );
-
-        if ($password->equals($user->getPassword())) {
-            $password = null;
-        }
-
-        return $user->update($name, $email, $password);
-    }
-
-    /**
-     * Update a user and sync its roles
-     * @param  int $userId
-     * @param      $data
-     * @param      $roles
-     * @return mixed
-     */
-    public function updateAndSyncRoles($userId, $data, $roles)
-    {
-        // TODO: Implement updateAndSyncRoles() method.
-    }
-
-    /**
-     * Deletes a user
-     * @param $id
-     * @return mixed
-     */
-    public function delete($id)
-    {
-        $user = $this->find($id);
-
-        return parent::delete($user);
     }
 
     /**
@@ -189,5 +101,14 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
     public function flush()
     {
         return $this->_em->flush();
+    }
+
+    /**
+     * Deletes a user
+     * @param User $user
+     */
+    public function delete(User $user)
+    {
+        return $this->_em->remove($user);
     }
 }

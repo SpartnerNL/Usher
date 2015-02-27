@@ -8,14 +8,7 @@ interface RoleRepository
      * @return object
      */
     public function all();
-
-    /**
-     * Create a user resource
-     * @param  array $data
-     * @return Role
-     */
-    public function create(array $data);
-
+    
     /**
      * Find a user by its ID
      * @param $id
@@ -31,21 +24,6 @@ interface RoleRepository
     public function findByName($name);
 
     /**
-     * Update a user
-     * @param Role $user
-     * @param      $data
-     * @return Role
-     */
-    public function update(Role $user, array $data);
-
-    /**
-     * Deletes a user
-     * @param $id
-     * @return mixed
-     */
-    public function delete($id);
-
-    /**
      * Persist entity
      * @param $entity
      * @return mixed
@@ -57,4 +35,10 @@ interface RoleRepository
      * @return mixed
      */
     public function flush();
+
+    /**
+     * Deletes a role
+     * @param Role $role
+     */
+    public function delete(Role $role);
 }

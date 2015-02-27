@@ -12,21 +12,6 @@ interface UserRepository
     public function all();
 
     /**
-     * Create a user resource
-     * @param  array $data
-     * @return User
-     */
-    public function create(array $data);
-
-    /**
-     * Create a user and assign roles to it
-     * @param  array $data
-     * @param  array $roles
-     * @return void
-     */
-    public function createWithRoles($data, $roles);
-
-    /**
      * Find a user by its ID
      * @param $id
      * @return User
@@ -39,30 +24,12 @@ interface UserRepository
      * @return User
      */
     public function findByEmail(Email $email);
-    
-    /**
-     * Update a user
-     * @param User $user
-     * @param $data
-     * @return User
-     */
-    public function update(User $user, array $data);
-
-    /**
-     * Update a user and sync its roles
-     * @param  int $userId
-     * @param      $data
-     * @param      $roles
-     * @return mixed
-     */
-    public function updateAndSyncRoles($userId, $data, $roles);
 
     /**
      * Deletes a user
-     * @param $id
-     * @return mixed
+     * @param User $user
      */
-    public function delete($id);
+    public function delete(User $user);
 
     /**
      * Persist entity

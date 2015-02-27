@@ -34,9 +34,9 @@ class DoctrineRoleRepository extends EntityRepository implements RoleRepository
      */
     public function __construct(EntityManagerInterface $em, ClassMetadata $class)
     {
-        $this->_entityName = $class->name;
         $this->_em = $em;
         $this->_class = $class;
+        $this->_entityName = $class->name;
     }
 
     /**
@@ -61,41 +61,6 @@ class DoctrineRoleRepository extends EntityRepository implements RoleRepository
     }
 
     /**
-     * Create a user resource
-     * @param  array $data
-     * @return Role
-     */
-    public function create(array $data)
-    {
-        $role = new $this->_entityName;
-
-        return $role->create($data['name'], $data['permissions']);
-    }
-
-    /**
-     * Update a user
-     * @param Role  $role
-     * @param array $data
-     * @return Role
-     */
-    public function update(Role $role, array $data)
-    {
-        return $role->update($data['name'], $data['permissions']);
-    }
-
-    /**
-     * Deletes a user
-     * @param $id
-     * @return mixed
-     */
-    public function delete($id)
-    {
-        $role = $this->find($id);
-
-        return parent::delete($role);
-    }
-
-    /**
      * Persist entity
      * @param $entity
      * @return mixed
@@ -112,5 +77,14 @@ class DoctrineRoleRepository extends EntityRepository implements RoleRepository
     public function flush()
     {
         return $this->_em->flush();
+    }
+
+    /**
+     * Deletes a role
+     * @param Role $role
+     */
+    public function delete(Role $role)
+    {
+        return $this->_em->remove($role);
     }
 }
