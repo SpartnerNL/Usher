@@ -1,4 +1,4 @@
-<?php namespace Maatwebsite\Usher\Domain\Users\Embeddables;
+<?php namespace Maatwebsite\Usher\Domain\Users\Bans;
 
 use Doctrine\ORM\Mapping as ORM;
 use Maatwebsite\Usher\Domain\Shared\Embeddables\Date;

@@ -1,4 +1,4 @@
-<?php namespace Maatwebsite\Usher\Domain\Users\Embeddables;
+<?php namespace Maatwebsite\Usher\Domain\Users\Suspends;
 
 use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;

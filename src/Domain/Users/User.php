@@ -1,36 +1,28 @@
 <?php namespace Maatwebsite\Usher\Domain\Users;
 
 use Doctrine\ORM\Mapping as ORM;
-use Maatwebsite\Usher\Domain\Users\Activations\Activatable;
-use Maatwebsite\Usher\Domain\Users\Activations\ActivationCode;
-use Maatwebsite\Usher\Domain\Users\Events\UserRegistered;
-use Maatwebsite\Usher\Domain\Users\Events\UserUpdatedProfile;
+use Maatwebsite\Usher\Domain\Users\Traits\Roleable;
 use Maatwebsite\Usher\Traits\RememberToken;
-use Maatwebsite\Usher\Contracts\Roles\Role;
 use Maatwebsite\Usher\Traits\Authentication;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Doctrine\Common\Collections\ArrayCollection;
+use Maatwebsite\Usher\Domain\Users\Bans\Bannable;
+use Maatwebsite\Usher\Domain\Users\Traits\Timestamps;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\Name;
-use Maatwebsite\Usher\Domain\Users\Events\UserGotBanned;
-use Maatwebsite\Usher\Domain\Users\Embeddables\BannedAt;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\Email;
+use Maatwebsite\Usher\Domain\Users\Suspends\Suspendable;
+use Maatwebsite\Usher\Domain\Users\Events\UserRegistered;
 use Maatwebsite\Usher\Domain\Permissions\PermissionTrait;
 use Maatwebsite\Usher\Domain\Shared\Embeddables\UpdatedAt;
-use Maatwebsite\Usher\Domain\Users\Events\UserGotSuspended;
+use Maatwebsite\Usher\Domain\Users\Activations\Activatable;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\Password;
 use Maatwebsite\Usher\Domain\Users\Embeddables\RegisteredAt;
 use Maatwebsite\Usher\Contracts\Users\User as UserInterface;
+use Maatwebsite\Usher\Domain\Users\Events\UserUpdatedProfile;
 use Maatwebsite\Usher\Domain\Users\Embeddables\SuspendedTill;
-use Maatwebsite\Usher\Contracts\Users\Embeddables\LastLoginAt;
-use Maatwebsite\Usher\Contracts\Users\Embeddables\LastAttemptAt;
+use Maatwebsite\Usher\Domain\Users\Activations\ActivationCode;
 use Maatwebsite\Usher\Contracts\Permissions\PermissionInterface;
-use Maatwebsite\Usher\Domain\Users\Events\UserGotAssignedToRole;
-use Maatwebsite\Usher\Domain\Users\Events\UserGotRemovedFromRole;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\HashedPassword;
-use Maatwebsite\Usher\Contracts\Users\Embeddables\BannedAt as BannedAtInterface;
-use Maatwebsite\Usher\Contracts\Shared\Embeddables\UpdatedAt as UpdatedAtInterface;
-use Maatwebsite\Usher\Contracts\Users\Embeddables\RegisteredAt as RegisteredAtInterface;
-use Maatwebsite\Usher\Contracts\Users\Embeddables\SuspendedTill as SuspendTillInterface;
 
 /**
  * @ORM\MappedSuperclass
@@ -42,7 +34,14 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     /**
      * Traits
      */
-    use Authentication, RememberToken, PermissionTrait, Activatable;
+    use Authentication,
+        Roleable,
+        RememberToken,
+        PermissionTrait,
+        Activatable,
+        Bannable,
+        Suspendable,
+        Timestamps;
 
     /**
      * @ORM\Id
@@ -70,42 +69,6 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     protected $password;
 
     /**
-     * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Users\Embeddables\LastAttemptAt", columnPrefix=false)
-     * @var LastAttemptAt
-     */
-    protected $last_attempt_at = null;
-
-    /**
-     * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Users\Embeddables\LastLoginAt", columnPrefix=false)
-     * @var LastLoginAt
-     */
-    protected $last_login_at = null;
-
-    /**
-     * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Users\Embeddables\SuspendedTill", columnPrefix=false)
-     * @var SuspendedTillInterface
-     */
-    protected $suspended_till = null;
-
-    /**
-     * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Users\Embeddables\BannedAt", columnPrefix=false)
-     * @var BannedAtInterface
-     */
-    protected $banned_at = null;
-
-    /**
-     * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Users\Embeddables\RegisteredAt", columnPrefix=false)
-     * @var RegisteredAt
-     */
-    protected $registered_at = null;
-
-    /**
-     * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Shared\Embeddables\UpdatedAt", columnPrefix=false)
-     * @var UpdatedAt
-     */
-    protected $updated_at = null;
-
-    /**
      * Init User entity
      */
     public function __construct()
@@ -119,7 +82,7 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     public function prePersist()
     {
         $this->setRegisteredAt(
-            new RegisteredAt
+            new RegisteredAt()
         );
 
         $this->setUpdatedAt(
@@ -137,7 +100,7 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     public function preUpdate()
     {
         $this->setUpdatedAt(
-            new UpdatedAt
+            new UpdatedAt()
         );
     }
 
@@ -236,64 +199,6 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     }
 
     /**
-     * @return ArrayCollection|\Maatwebsite\Usher\Contracts\Roles\Role[]
-     */
-    abstract public function getRoles();
-
-    /**
-     * @param ArrayCollection|Role[] $roles
-     */
-    abstract public function setRoles(ArrayCollection $roles);
-
-    /**
-     * @param Role $role
-     */
-    public function assignRole(Role $role)
-    {
-        if (!$this->getRoles()->contains($role)) {
-            $this->getRoles()->add($role);
-
-            event(new UserGotAssignedToRole($this, $role));
-        }
-    }
-
-    /**
-     * Check if user has certain role
-     * @param $roleId
-     * @return mixed
-     */
-    public function hasRole($roleId)
-    {
-        foreach ($this->getRoles() as $role) {
-            if ($role->getId() == $roleId) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Role $role
-     */
-    public function removeRole(Role $role)
-    {
-        if ($this->getRoles()->contains($role)) {
-            $this->getRoles()->removeElement($role);
-
-            event(new UserGotRemovedFromRole($this, $role));
-        }
-    }
-
-    /**
-     * Remove all roles
-     */
-    public function removeAllRoles()
-    {
-        $this->setRoles(new ArrayCollection);
-    }
-
-    /**
      * @param $permissions
      * @return bool
      */
@@ -337,164 +242,5 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
         }
 
         return false;
-    }
-
-    /**
-     * @return LastAttemptAt
-     */
-    public function getLastAttemptAt()
-    {
-        return $this->last_attempt_at;
-    }
-
-    /**
-     * @param LastAttemptAt $last_attempt_at
-     */
-    public function setLastAttemptAt(LastAttemptAt $last_attempt_at)
-    {
-        $this->last_attempt_at = $last_attempt_at;
-    }
-
-    /**
-     * @return LastLoginAt
-     */
-    public function getLastLoginAt()
-    {
-        return $this->last_login_at;
-    }
-
-    /**
-     * @param LastLoginAt $last_login_at
-     */
-    public function setLastLoginAt(LastLoginAt $last_login_at)
-    {
-        $this->last_login_at = $last_login_at;
-    }
-
-    /**
-     * @return SuspendTillInterface
-     */
-    public function getSuspendedTill()
-    {
-        return $this->suspended_till;
-    }
-
-    /**
-     * @param SuspendTillInterface $suspended_till
-     */
-    public function setSuspendedTill(SuspendTillInterface $suspended_till)
-    {
-        $this->suspended_till = $suspended_till;
-    }
-
-    /**
-     * Check if is suspended
-     * @return bool
-     */
-    public function isSuspended()
-    {
-        return !$this->getSuspendedTill()->inPast();
-    }
-
-    /**
-     * Suspend for x minutes
-     * @param int $minutes
-     * @return mixed
-     */
-    public function suspend($minutes = 15)
-    {
-        $this->setSuspendedTill(
-            SuspendedTill::addMinutes($minutes)
-        );
-
-        event(new UserGotSuspended($this));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function unsetSuspended()
-    {
-        $this->suspended_till = null;
-    }
-
-    /**
-     * @return BannedAtInterface
-     */
-    public function getBannedAt()
-    {
-        return $this->banned_at;
-    }
-
-    /**
-     * @param BannedAtInterface $banned_at
-     */
-    public function setBannedAt(BannedAtInterface $banned_at)
-    {
-        $this->banned_at = $banned_at;
-    }
-
-    /**
-     * Check if is banned
-     * @return bool
-     */
-    public function isBanned()
-    {
-        return $this->getBannedAt() && !is_null($this->getBannedAt()->getDate())
-            ? true
-            : false;
-    }
-
-    /**
-     * Ban user
-     * @return mixed
-     */
-    public function ban()
-    {
-        $this->setBannedAt(
-            new BannedAt
-        );
-
-        event(new UserGotBanned($this));
-    }
-
-    /**
-     * @return void
-     */
-    public function unsetBan()
-    {
-        $this->banned_at = null;
-    }
-
-    /**
-     * @return RegisteredAt
-     */
-    public function getRegisteredAt()
-    {
-        return $this->registered_at;
-    }
-
-    /**
-     * @param RegisteredAtInterface $registered_at
-     */
-    public function setRegisteredAt(RegisteredAtInterface $registered_at)
-    {
-        $this->registered_at = $registered_at;
-    }
-
-    /**
-     * @return UpdatedAt
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updated_at;
-    }
-
-    /**
-     * @param UpdatedAtInterface $updated_at
-     */
-    public function setUpdatedAt(UpdatedAtInterface $updated_at)
-    {
-        $this->updated_at = $updated_at;
     }
 }
