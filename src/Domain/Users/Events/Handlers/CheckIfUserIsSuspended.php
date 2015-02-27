@@ -1,37 +1,42 @@
 <?php namespace Maatwebsite\Usher\Domain\Users\Events\Handlers;
 
+use Illuminate\Contracts\Auth\Guard;
+use Maatwebsite\Usher\Contracts\Users\User;
 use Maatwebsite\Usher\Contracts\Users\UserRepository;
-use Maatwebsite\Usher\Domain\Users\Embeddables\Email;
 use Maatwebsite\Usher\Exceptions\UserIsSuspendedException;
 
 class CheckIfUserIsSuspended
 {
 
     /**
-     * @var UserRepository
+     * @var Guard
      */
-    protected $repository;
+    private $guard;
 
     /**
-     * @param UserRepository $repository
+     * @var UserRepository
      */
-    public function __construct(UserRepository $repository)
+    private $repository;
+
+    /**
+     * @param Guard          $guard
+     * @param UserRepository $repository
+     * @internal param UserRepository $repository
+     */
+    public function __construct(Guard $guard, UserRepository $repository)
     {
+        $this->guard = $guard;
         $this->repository = $repository;
     }
 
     /**
      * Handle
-     * @param Event $event
-     * @throws UserIsSuspendedException
+     * @param User $user
      */
-    public function handle($event)
+    public function handle(User $user)
     {
-        $user = $this->repository->findByEmail(new Email(
-            $event['email']
-        ));
-
         if ($user && $user->isSuspended()) {
+            $this->guard->logout();
             throw new UserIsSuspendedException('You are temporarily suspended. Try again later.');
         } elseif ($user && $user->getSuspendedTill()) {
             $user->unsetSuspended();

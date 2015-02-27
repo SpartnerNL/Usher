@@ -2,9 +2,9 @@
 
 use Illuminate\Contracts\Auth\Guard;
 use Maatwebsite\Usher\Contracts\Users\User;
-use Maatwebsite\Usher\Exceptions\UserIsBannedException;
+use Maatwebsite\Usher\Exceptions\UserNotActivatedException;
 
-class CheckIfUserIsBanned
+class CheckIfUserIsActivated
 {
 
     /**
@@ -24,12 +24,13 @@ class CheckIfUserIsBanned
     /**
      * Handle
      * @param User $user
+     * @throws UserNotActivatedException
      */
     public function handle(User $user)
     {
-        if ($user && $user->isBanned()) {
+        if ($user && !$user->isActivated()) {
             $this->guard->logout();
-            throw new UserIsBannedException('You are banned from the system');
+            throw new UserNotActivatedException();
         }
     }
 }

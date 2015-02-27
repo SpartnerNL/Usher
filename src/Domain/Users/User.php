@@ -1,6 +1,8 @@
 <?php namespace Maatwebsite\Usher\Domain\Users;
 
 use Doctrine\ORM\Mapping as ORM;
+use Maatwebsite\Usher\Domain\Users\Activations\Activatable;
+use Maatwebsite\Usher\Domain\Users\Activations\ActivationCode;
 use Maatwebsite\Usher\Domain\Users\Events\UserRegistered;
 use Maatwebsite\Usher\Domain\Users\Events\UserUpdatedProfile;
 use Maatwebsite\Usher\Traits\RememberToken;
@@ -40,7 +42,7 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
     /**
      * Traits
      */
-    use Authentication, RememberToken, PermissionTrait;
+    use Authentication, RememberToken, PermissionTrait, Activatable;
 
     /**
      * @ORM\Id
@@ -122,6 +124,10 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
 
         $this->setUpdatedAt(
             new UpdatedAt
+        );
+
+        $this->setActivationCode(
+            ActivationCode::generate()
         );
     }
 
@@ -434,7 +440,9 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
      */
     public function isBanned()
     {
-        return !is_null($this->getBannedAt()->getDate()) ? true : false;
+        return $this->getBannedAt() && !is_null($this->getBannedAt()->getDate())
+            ? true
+            : false;
     }
 
     /**
