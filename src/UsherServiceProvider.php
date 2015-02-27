@@ -82,7 +82,7 @@ class UsherServiceProvider extends ServiceProvider
             return new DoctrineRoleRepository(
                 $app['Doctrine\ORM\EntityManagerInterface'],
                 new ClassMetadata(
-                    $app['config']['usher.users.entity']
+                    $app['config']['usher.roles.entity']
                 )
             );
         });
