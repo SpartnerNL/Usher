@@ -8,7 +8,7 @@ interface RoleRepository
      * @return object
      */
     public function all();
-    
+
     /**
      * Find a user by its ID
      * @param $id

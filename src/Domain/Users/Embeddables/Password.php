@@ -3,8 +3,8 @@
 use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Contracts\Hashing\Hasher;
-use Maatwebsite\Usher\Contracts\Users\Embeddables\Password as PasswordInterface;
 use Maatwebsite\Usher\Domain\Shared\Embedabble;
+use Maatwebsite\Usher\Contracts\Users\Embeddables\Password as PasswordInterface;
 
 /**
  * @ORM\Embeddable
@@ -39,12 +39,12 @@ class Password extends Embedabble implements PasswordInterface
      */
     public function __construct($password, Hasher $hasher = null)
     {
-        $this->hasher = $hasher ?: app('Illuminate\Contracts\Hashing\Hasher');
+        $this->hasher = $hasher;
         $this->setPassword($password);
     }
 
     /**
-     * @return string
+     * @return HashedPassword
      */
     public function getPassword()
     {
@@ -57,7 +57,10 @@ class Password extends Embedabble implements PasswordInterface
     public function setPassword($password)
     {
         Assertion::betweenLength($password, self::MIN, self::MAX);
-        $this->password = $this->hasher->make($password);
+        $this->password = HashedPassword::make(
+            $password,
+            $this->hasher
+        );
     }
 
     /**
