@@ -174,12 +174,7 @@ interface User
      * @return mixed
      */
     public function hasRole($roleId);
-
-    /**
-     * @param Role[] $roles
-     */
-    public function syncRoles($roles = array());
-
+    
     /**
      * @param Role $role
      */
