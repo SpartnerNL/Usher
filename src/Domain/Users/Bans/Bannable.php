@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Usher\Domain\Users\Bans;
 
-use Maatwebsite\Usher\Contracts\Users\Embeddables\BannedAt as BannedAtInterface;
 use Maatwebsite\Usher\Domain\Users\Events\UserGotBanned;
+use Maatwebsite\Usher\Contracts\Users\Embeddables\BannedAt as BannedAtInterface;
 
 trait Bannable
 {
@@ -57,6 +57,6 @@ trait Bannable
      */
     public function unsetBan()
     {
-        $this->banned_at = null;
+        $this->getBannedAt()->setDate(null);
     }
 }

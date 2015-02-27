@@ -1,4 +1,4 @@
-<?php namespace Maatwebsite\Usher\Tests\Domain\Users;
+<?php namespace Maatwebsite\Usher\tESTS\Domain\Users;
 
 use Illuminate\Contracts\Hashing\Hasher;
 use Maatwebsite\Usher\Domain\Users\Embeddables\Email;
@@ -54,6 +54,18 @@ class UserTest extends TestCase
 
         $this->assertInstanceOf('Maatwebsite\Usher\Domain\Users\Embeddables\Password', $this->entity->getPassword());
         $this->assertEquals('hashed', (string) $this->entity->getPassword());
+    }
+
+
+    public function test_can_check_if_has_access()
+    {
+        $this->entity->setPermissions([
+            'dashboard.index' => true,
+            'dashboard.show'  => false
+        ]);
+
+        $this->assertTrue($this->entity->hasAccess('dashboard.index'));
+        $this->assertFalse($this->entity->hasAccess('dashboard.show'));
     }
 }
 

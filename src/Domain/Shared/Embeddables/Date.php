@@ -63,7 +63,7 @@ class Date extends Embedabble implements DateInterface
     /**
      * @param Carbon $date
      */
-    public function setDate(Carbon $date)
+    public function setDate(Carbon $date = null)
     {
         $this->date = $date;
     }

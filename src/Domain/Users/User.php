@@ -208,8 +208,6 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
             $permissions = func_get_args();
         }
 
-        $hasAccess = true;
-
         // Loop through user permissions
         foreach ($permissions as $permission) {
 
@@ -227,10 +225,10 @@ abstract class User implements UserInterface, Authenticatable, PermissionInterfa
             }
         }
 
-        // If user doesn't have enough permissions
-        // deny access
-        if (!$hasAccess) {
-            return false;
+        // If one of the user permissions existed,
+        // return the sum of all access
+        if (isset($hasAccess)) {
+            return $hasAccess;
         }
 
         // Check if user has permission to one

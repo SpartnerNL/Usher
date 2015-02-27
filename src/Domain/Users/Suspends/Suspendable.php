@@ -3,7 +3,8 @@
 use Maatwebsite\Usher\Contracts\Users\Embeddables\SuspendedTill as SuspendedTillInterface;
 use Maatwebsite\Usher\Domain\Users\Events\UserGotSuspended;
 
-trait Suspendable {
+trait Suspendable
+{
 
     /**
      * @ORM\Embedded(class = "Maatwebsite\Usher\Domain\Users\Suspends\SuspendedTill", columnPrefix=false)
@@ -55,7 +56,6 @@ trait Suspendable {
      */
     public function unsetSuspended()
     {
-        $this->suspended_till = null;
+        $this->getSuspendedTill()->setDate(null);
     }
-
 }
