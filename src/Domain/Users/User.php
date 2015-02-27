@@ -2,6 +2,7 @@
 
 use Doctrine\ORM\Mapping as ORM;
 use Maatwebsite\Usher\Domain\Users\Events\UserRegistered;
+use Maatwebsite\Usher\Domain\Users\Events\UserUpdatedProfile;
 use Maatwebsite\Usher\Traits\RememberToken;
 use Maatwebsite\Usher\Contracts\Roles\Role;
 use Maatwebsite\Usher\Traits\Authentication;
