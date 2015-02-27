@@ -1,4 +1,4 @@
-<?php namespace Maatwebsite\Usher\Traits;
+<?php namespace Maatwebsite\Usher\Domain\Users\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 

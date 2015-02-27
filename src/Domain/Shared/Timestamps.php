@@ -1,4 +1,4 @@
-<?php namespace Maatwebsite\Usher\Traits;
+<?php namespace Maatwebsite\Usher\Domain\Shared;
 
 use Doctrine\ORM\Mapping as ORM;
 use Maatwebsite\Usher\Domain\Shared\Embeddables\CreatedAt;

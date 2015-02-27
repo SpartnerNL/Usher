@@ -1,16 +1,16 @@
 <?php namespace Maatwebsite\Usher\Domain\Users;
 
 use Doctrine\ORM\Mapping as ORM;
-use Maatwebsite\Usher\Domain\Users\Traits\Roleable;
-use Maatwebsite\Usher\Traits\RememberToken;
-use Maatwebsite\Usher\Traits\Authentication;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Maatwebsite\Usher\Domain\Users\Bans\Bannable;
+use Maatwebsite\Usher\Domain\Users\Traits\Roleable;
 use Maatwebsite\Usher\Domain\Users\Traits\Timestamps;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\Name;
 use Maatwebsite\Usher\Contracts\Users\Embeddables\Email;
+use Maatwebsite\Usher\Domain\Users\Traits\RememberToken;
 use Maatwebsite\Usher\Domain\Users\Suspends\Suspendable;
+use Maatwebsite\Usher\Domain\Users\Traits\Authentication;
 use Maatwebsite\Usher\Domain\Users\Events\UserRegistered;
 use Maatwebsite\Usher\Domain\Permissions\PermissionTrait;
 use Maatwebsite\Usher\Domain\Shared\Embeddables\UpdatedAt;

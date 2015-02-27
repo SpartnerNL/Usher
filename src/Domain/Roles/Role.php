@@ -1,16 +1,13 @@
 <?php namespace Maatwebsite\Usher\Domain\Roles;
 
 use Doctrine\ORM\Mapping as ORM;
-use Maatwebsite\Usher\Contracts\Permissions\PermissionInterface;
+use Maatwebsite\Usher\Domain\Shared\Timestamps;
+use Doctrine\Common\Collections\ArrayCollection;
 use Maatwebsite\Usher\Domain\Permissions\PermissionTrait;
 use Maatwebsite\Usher\Domain\Roles\Events\RoleWasCreated;
 use Maatwebsite\Usher\Domain\Roles\Events\RoleWasUpdated;
-use Maatwebsite\Usher\Traits\Timestamps;
-use Maatwebsite\Usher\Contracts\Users\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use Maatwebsite\Usher\Contracts\Roles\Role as RoleInterface;
-use Maatwebsite\Usher\Domain\Users\Events\UserGotAssignedToRole;
-use Maatwebsite\Usher\Domain\Users\Events\UserGotRemovedFromRole;
+use Maatwebsite\Usher\Contracts\Permissions\PermissionInterface;
 
 /**
  * @ORM\MappedSuperclass
