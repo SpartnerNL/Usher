@@ -55,6 +55,6 @@ class ActivationCode extends Date implements ActivationCodeInterface
      */
     public function toString()
     {
-        return (string) $this->getToken();
+        return (string) $this->getCode();
     }
 }
