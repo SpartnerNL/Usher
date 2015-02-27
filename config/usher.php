@@ -7,25 +7,32 @@ return array(
     | Users
     |--------------------------------------------------------------------------
     */
-    'users'  => [
+    'users'       => [
         'entity' => 'Maatwebsite\Usher\Domain\Users\UsherUser'
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Roles
     |--------------------------------------------------------------------------
     */
-    'roles'  => [
+    'roles'       => [
         'entity' => 'Maatwebsite\Usher\Domain\Roles\UsherRole'
     ],
+    /*
+    |--------------------------------------------------------------------------
+    | Permissions
+    |--------------------------------------------------------------------------
+    */
 
+    'permissions' => [
+        'strict' => true
+    ],
     /*
     |--------------------------------------------------------------------------
     | Event Listeners
     |--------------------------------------------------------------------------
     */
-    'events' => [
+    'events'      => [
         'auth.attempt' => [
             'Maatwebsite\Usher\Domain\Users\Events\Handlers\SaveLastAttemptDate',
             'Maatwebsite\Usher\Domain\Users\Events\Handlers\CheckIfUserIsBanned',

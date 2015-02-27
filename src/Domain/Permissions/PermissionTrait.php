@@ -59,9 +59,28 @@ trait PermissionTrait
      * @param bool $default
      * @return bool
      */
-    public function getPermission($key, $default = true)
+    public function getPermission($key, $default = null)
     {
-        return $this->permissionExists($key) ? $this->permissions[$key] : $default;
+        return $this->permissionExists($key) ? $this->permissions[$key] : $this->getDefaultPermission($default);
+    }
+
+    /**
+     * @param null $default
+     * @return bool|null
+     */
+    public function getDefaultPermission($default = null)
+    {
+        if (!is_null($default)) {
+            return $default;
+        }
+
+        $strict = config('usher.permissions.strict', true);
+
+        if($strict) {
+            return false;
+        }
+
+        return false;
     }
 
     /**
