@@ -71,14 +71,16 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
      */
     public function findByCredentials(array $credentials)
     {
-        if (isset($credentials['password'])) {
-            unset($credentials['password']);
-        }
+        $creds = array();
 
-        // Transform to embeddable ready key
-        if (isset($credentials['email'])) {
-            $credentials['email.email'] = $credentials['email'];
-            unset($credentials['email']);
+        foreach ($credentials as $key => $value) {
+            if (!str_contains($key, 'password')) {
+                if ($key == 'email') {
+                    $creds['email.email'] = $credentials['email'];
+                } else {
+                    $creds[$key] = $value;
+                }
+            }
         }
 
         return $this->findOneBy($credentials);
