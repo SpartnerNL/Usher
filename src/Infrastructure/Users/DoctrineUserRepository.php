@@ -83,7 +83,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
             }
         }
 
-        return $this->findOneBy($credentials);
+        return $this->findOneBy($creds);
     }
 
     /**
