@@ -50,4 +50,18 @@ interface UserRepository
      * @return mixed
      */
     public function findByCredentials(array $credentials);
+
+    /**
+     * @param $id
+     *
+     * @return User
+     */
+    public function findWithRole($id);
+
+    /**
+     * @param $criteria
+     *
+     * @return User
+     */
+    public function findWithRoleByCriteria($criteria);
 }
