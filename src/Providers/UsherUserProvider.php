@@ -42,7 +42,7 @@ class UsherUserProvider implements UserProvider
      */
     public function retrieveById($identifier)
     {
-        return $this->repository->find($identifier);
+        return $this->repository->findWithRole($identifier);
     }
 
     /**
@@ -55,7 +55,7 @@ class UsherUserProvider implements UserProvider
     {
         $entity = $this->getEntity();
 
-        return $this->repository->findOneBy([
+        return $this->repository->findWithRoleByCriteria([
             $entity->getKeyName()           => $identifier,
             $entity->getRememberTokenName() => $token
         ]);
@@ -70,7 +70,6 @@ class UsherUserProvider implements UserProvider
     public function updateRememberToken(Authenticatable $user, $token)
     {
         $user->setRememberToken($token);
-        $this->repository->persist($user);
         $this->repository->flush();
     }
 
