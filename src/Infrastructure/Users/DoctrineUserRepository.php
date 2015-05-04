@@ -87,7 +87,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
         $builder->join('u.roles', 'r');
 
         foreach ($creds as $name => $value) {
-            $builder->where('u.' . $name . ' = :' . $name);
+            $builder->andWhere('u.' . $name . ' = :' . $name);
         }
 
         $query = $builder->getQuery();
@@ -129,7 +129,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
         $builder->join('u.roles', 'r');
 
         foreach ($criteria as $name => $value) {
-            $builder->where('u.' . $name . ' = :' . $name);
+            $builder->andWhere('u.' . $name . ' = :' . $name);
         }
 
         $query = $builder->getQuery();
