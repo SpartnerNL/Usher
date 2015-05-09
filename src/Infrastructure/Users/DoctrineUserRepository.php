@@ -87,12 +87,12 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
         $builder->join('u.roles', 'r');
 
         foreach ($creds as $name => $value) {
-            $builder->andWhere('u.' . $name . ' = :' . $name);
+            $builder->andWhere('u.' . $name . ' = :' . str_replace('.', '', $name));
         }
 
         $query = $builder->getQuery();
         foreach ($creds as $name => $value) {
-            $query->setParameter($name, $value);
+            $query->setParameter(str_replace('.', '', $name), $value);
         }
 
         return $query->getOneOrNullResult();
@@ -129,12 +129,12 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
         $builder->join('u.roles', 'r');
 
         foreach ($criteria as $name => $value) {
-            $builder->andWhere('u.' . $name . ' = :' . $name);
+            $builder->andWhere('u.' . $name . ' = :' . str_replace('.', '', $name));
         }
 
         $query = $builder->getQuery();
         foreach ($criteria as $name => $value) {
-            $query->setParameter($name, $value);
+            $query->setParameter(str_replace('.', '', $name), $value);
         }
 
         return $query->getOneOrNullResult();
