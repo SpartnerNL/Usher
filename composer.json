@@ -16,17 +16,11 @@
       "email": "patrick@maatwebsite.nl"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:Maatwebsite/laravel-doctrine.git"
-    }
-  ],
   "require": {
     "php": ">=5.4.0",
     "nesbot/carbon": "~1.0",
     "beberlei/assert": "~2.3",
-    "mitchellvanw/laravel-doctrine": "dev-develop"
+    "brouwers/laravel-doctrine": "~1.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.5",

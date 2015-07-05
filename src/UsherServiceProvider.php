@@ -28,6 +28,11 @@ class UsherServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Add namespace to driver chain
+        $this->app['events']->listen('doctrine.driver-chain::booted', function ($driver, $chain) {
+            $chain->addDriver($driver, 'Maatwebsite');
+        });
+
         $this->bindUserEntity();
         $this->bindRepositories();
         $this->extendAuthManager();
@@ -39,7 +44,7 @@ class UsherServiceProvider extends ServiceProvider
      */
     protected function extendAuthManager()
     {
-        // Set Usher as default auth drive
+        // Set Usher as default auth driver
         $this->app['config']->set('auth.driver', 'usher');
 
         // Extend the auth manager
