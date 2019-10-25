@@ -18,8 +18,6 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "nesbot/carbon": "~1.0",
-    "beberlei/assert": "~2.3",
     "brouwers/laravel-doctrine": "~1.0"
   },
   "require-dev": {
